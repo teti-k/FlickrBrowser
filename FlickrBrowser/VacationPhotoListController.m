@@ -21,7 +21,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //NSLog(@"self.photos %@", self.photos);
+    NSLog(@"self.photos %@", self.photos);
+    
 }
 
 -(void) setPhotos:(NSSet *)photos
@@ -37,9 +38,9 @@
      }];
 
 }
--(void) viewWillAppear:(BOOL)animated
+-(void) viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     [self.tableView reloadData];
 }
 
@@ -58,8 +59,8 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
-            cell.textLabel.text = [[self.photoArray objectAtIndex:indexPath.row] title];
-            cell.detailTextLabel.text = [[self.photoArray objectAtIndex:indexPath.row] subtitle];
+            cell.textLabel.text = [(self.photoArray)[indexPath.row] title];
+            cell.detailTextLabel.text = [(self.photoArray)[indexPath.row] subtitle];
             //return cell;
 
     return cell;
@@ -71,9 +72,15 @@
     {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         ShowImageViewController *destLocation = [segue destinationViewController];
-        Photo *photo = [self.photoArray objectAtIndex:indexPath.row];
+        Photo *photo = (self.photoArray)[indexPath.row];
         NSMutableDictionary *image = [NSMutableDictionary dictionaryWithObjectsAndKeys:photo.unique, FLICKR_PHOTO_ID, photo.imageURL,FLICKR_URL, nil];
         destLocation.selectedImage = image;
+        destLocation.navigationItem.title = photo.title;
+        destLocation.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
         
     }
 }

@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *vacationName;
 @property (nonatomic,strong) IBOutlet UITextField *vacationDescription;
 @property (nonatomic, strong) IBOutlet UIButton *saveButton;
+@property (nonatomic, strong) IBOutlet UIButton *cancelButton;
 
 @end
 
@@ -22,6 +23,8 @@
 {
     [super viewDidLoad];
 	[self.saveButton addTarget:self action:@selector(saveVacation) forControlEvents:UIControlEventTouchUpInside];
+    [self.cancelButton addTarget:self action:@selector(cancelSave) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationItem.leftBarButtonItem setTitle:@"Back"];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -43,6 +46,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void) cancelSave
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void) saveVacation
@@ -72,7 +79,16 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *vacationPlan = [[defaults objectForKey:VACATION_PLANS_ARRAY] mutableCopy];
     if (!vacationPlan) vacationPlan = [NSMutableArray array];
-    [vacationPlan addObject:name];
+    for (NSString *storedName in vacationPlan)
+    {
+        if ([storedName isEqualToString:name])
+        {
+            UIAlertView *emptyFiledAllert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There is already a plan with such name" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [emptyFiledAllert show];
+            return;
+        }
+        else [vacationPlan addObject:name];
+    }
     [defaults setObject:vacationPlan forKey:VACATION_PLANS_ARRAY];
     NSLog(@"vacation plans/AddVacation VC %d",[vacationPlan count]);
     [defaults synchronize];

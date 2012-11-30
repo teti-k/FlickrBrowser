@@ -22,16 +22,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   
+    [self useDocument];
 }
 
--(void) viewWillAppear:(BOOL)animated
+-(void) viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     self.title = @"Vacation by cities";
-    [self useDocument];
-    
-
+    [self.tableView reloadData];
 }
 
 -(void) useDocument
@@ -45,10 +43,9 @@
 
 - (void) setupFetchedResultsController:(UIManagedDocument *)vacation
 {
-    
-    
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Location"];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:vacation.managedObjectContext
@@ -89,7 +86,11 @@
         Location *location = [self.fetchedResultsController objectAtIndexPath:indexPath];
         dest.photos = location.photos;
         dest.title = location.name;
-
+        dest.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
     }
 }
 

@@ -40,13 +40,13 @@
 + (NSArray *)photosInPlace:(NSDictionary *)place maxResults:(int)maxResults
 {
     NSArray *photos = nil;
-    NSString *placeId = [place objectForKey:FLICKR_PLACE_ID];
+    NSString *placeId = place[FLICKR_PLACE_ID];
     if (placeId) {
         NSString *request = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&place_id=%@&per_page=%d&extras=original_format,tags,description,geo,date_upload,owner_name,place_url", placeId, maxResults];
-        NSString *placeName = [place objectForKey:FLICKR_PLACE_NAME];
+        NSString *placeName = place[FLICKR_PLACE_NAME];
         photos = [[self executeFlickrFetch:request] valueForKeyPath:@"photos.photo"];
         for (NSMutableDictionary *photo in photos) {
-            [photo setObject:placeName forKey:FLICKR_PHOTO_PLACE_NAME];
+            photo[FLICKR_PHOTO_PLACE_NAME] = placeName;
         }
     }
     return photos;
@@ -60,14 +60,14 @@
 
 + (NSString *)urlStringForPhoto:(NSDictionary *)photo format:(FlickrPhotoFormat)format
 {
-	id farm = [photo objectForKey:@"farm"];
-	id server = [photo objectForKey:@"server"];
-	id photo_id = [photo objectForKey:@"id"];
-	id secret = [photo objectForKey:@"secret"];
-	if (format == FlickrPhotoFormatOriginal) secret = [photo objectForKey:@"originalsecret"];
+	id farm = photo[@"farm"];
+	id server = photo[@"server"];
+	id photo_id = photo[@"id"];
+	id secret = photo[@"secret"];
+	if (format == FlickrPhotoFormatOriginal) secret = photo[@"originalsecret"];
     
 	NSString *fileType = @"jpg";
-	if (format == FlickrPhotoFormatOriginal) fileType = [photo objectForKey:@"originalformat"];
+	if (format == FlickrPhotoFormatOriginal) fileType = photo[@"originalformat"];
 	
 	if (!farm || !server || !photo_id || !secret) return nil;
 	

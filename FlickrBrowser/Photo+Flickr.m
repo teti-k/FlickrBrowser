@@ -21,7 +21,7 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
     request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", [flickrInfo objectForKey:FLICKR_PHOTO_ID]];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    request.sortDescriptors = @[sortDescriptor];
     
     NSError *error = nil;
     NSArray *matches = [context executeFetchRequest:request error:&error];
@@ -33,13 +33,14 @@
     } else if ([matches count] == 0)
         {
             photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
-            photo.unique = [flickrInfo objectForKey:FLICKR_PHOTO_ID];
-            photo.title = [flickrInfo objectForKey:FLICKR_PHOTO_TITLE];
+            photo.unique = flickrInfo[FLICKR_PHOTO_ID];
+            photo.title = flickrInfo[FLICKR_PHOTO_TITLE];
             photo.subtitle = [flickrInfo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
             photo.imageURL = [[FlickrFetcher urlForPhoto:flickrInfo format:FlickrPhotoFormatLarge] absoluteString];
-            photo.whereTaken = [Location locationName:[flickrInfo objectForKey:FLICKR_PHOTO_PLACE_NAME] inManagedObjectContext:context];
-            photo.tag = [Tag tagNames:[flickrInfo objectForKey:FLICKR_TAGS] inManagedObjectContext:context];
-            
+            photo.whereTaken = [Location locationName:flickrInfo[FLICKR_PHOTO_PLACE_NAME] inManagedObjectContext:context];
+            NSSet *setOfTagNames = [NSSet setWithArray:[flickrInfo[FLICKR_TAGS] componentsSeparatedByString:@" "]];
+            photo.tag = [Tag tagNames:setOfTagNames inManagedObjectContext:context];
+            NSLog(@"flickr photo %@", flickrInfo);
         }  else {
                 photo = [matches lastObject];
                 }
@@ -49,9 +50,9 @@
 + (void) deletePhotoWithFlickrInfo:(NSDictionary *)flickrInfo
             inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    NSLog(@"photo to delete %@", [flickrInfo objectForKey:FLICKR_PHOTO_ID]);
+    NSLog(@"photo to delete %@", flickrInfo[FLICKR_PHOTO_ID]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
-    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", [flickrInfo objectForKey:FLICKR_PHOTO_ID]];
+    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", flickrInfo[FLICKR_PHOTO_ID]];
     
     NSError *error = nil;
     NSArray *matches = [context executeFetchRequest:request error:&error];

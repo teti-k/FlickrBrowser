@@ -20,15 +20,13 @@ NSString *vacationPlan;
 {
     [super viewDidLoad];
     self.title = @"Your virtual vacations";
-    
-    //NSLog(@"vacation plan %@", self.vacationPlans.lastObject);
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.tableView reloadData];
     self.vacationPlans = [[NSUserDefaults standardUserDefaults] objectForKey:VACATION_PLANS_ARRAY];
+    [self.tableView reloadData];
 }
 
 -(void) setVacationPlans:(NSMutableArray *)vacationPlans
@@ -40,8 +38,7 @@ NSString *vacationPlan;
 }
 
 #pragma mark - Table view data source
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.vacationPlans.count;
 }
@@ -54,7 +51,8 @@ NSString *vacationPlan;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-        cell.textLabel.text = [self.vacationPlans objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [self.vacationPlans objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -62,7 +60,7 @@ NSString *vacationPlan;
 {
     //send to next view controllers the name of chosen Vacation Plan
     vacationPlan = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    NSLog(@"selected vacation/VacationVC %@",[[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text]);
+    
 }
 
 

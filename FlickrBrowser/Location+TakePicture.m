@@ -19,8 +19,8 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Location"];
     request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
+    request.sortDescriptors = @[sortDescriptor];
+
     NSError *error = nil;
     NSArray *locations = [context executeFetchRequest:request error:&error];
     
@@ -35,7 +35,15 @@
         location = [locations lastObject];
     }
     
+    if (location.photos.count == 0)
+    {
+        [context deleteObject:location];
+        [context save:nil];
+    }
+
     return location;
 }
+
+
 
 @end

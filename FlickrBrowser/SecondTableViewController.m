@@ -97,9 +97,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     // Configure the cell...
-    NSDictionary *photos = [_photos objectAtIndex:indexPath.row];
-    cell.textLabel.text = [photos objectForKey:FLICKR_PHOTO_TITLE];
-    cell.detailTextLabel.text = [photos objectForKey:FLICKR_PLACE_NAME];
+    NSDictionary *photos = _photos[indexPath.row];
+    cell.textLabel.text = photos[FLICKR_PHOTO_TITLE];
+    cell.detailTextLabel.text = photos[FLICKR_PLACE_NAME];
     return cell;
 }
 
@@ -116,7 +116,7 @@
 {
     if ([self splitViewShowImageVC])
     {
-       [self splitViewShowImageVC].selectedImage = [_photos objectAtIndex:indexPath.row];
+       [self splitViewShowImageVC].selectedImage = _photos[indexPath.row];
         [[self splitViewShowImageVC] downloadImage:[self splitViewShowImageVC].selectedImage];
     }
 }
@@ -129,9 +129,14 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         
         ShowImageViewController *dest = [segue destinationViewController];
-        dest.selectedImage = [_photos objectAtIndex:indexPath.row];
+        dest.selectedImage = _photos[indexPath.row];
         dest.imageTitle = [[sender textLabel] text];        
         dest.hidesBottomBarWhenPushed = YES; //hide tabs
+        dest.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
         
     }
 }

@@ -11,6 +11,7 @@
 #import "CoreDataTableViewController.h"
 #import "VacationHelper.h"
 #import "VacationPhotoListController.h"
+#import "VacationViewController.h"
 
 @interface TagsViewController ()
 
@@ -42,7 +43,7 @@
 
 -(void) useDocument
 {
-    [VacationHelper openVacation:self.vacationPlanName usingBlock:^(UIManagedDocument *vacation){
+    [VacationHelper openVacation:vacationPlan usingBlock:^(UIManagedDocument *vacation){
         [self setupFetchedResultsController:vacation];
         [vacation saveToURL:vacation.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:Nil];
     }];
@@ -54,7 +55,7 @@
     
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tag"];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:vacation.managedObjectContext
@@ -86,6 +87,11 @@
         Tag *tag = [self.fetchedResultsController objectAtIndexPath:indexPath];
         dest.photos = tag.photos;
         dest.title = tag.name;
+        dest.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
     }
 }
 

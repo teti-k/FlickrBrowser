@@ -34,6 +34,7 @@
     [super viewDidAppear:animated];
     [self.view setFrame:CGRectMake(120, 0, 200, 300)];
     self.selectedVacation = [NSMutableArray array];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,7 +64,7 @@
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [self.vacationPlans objectAtIndex:indexPath.row];
+    cell.textLabel.text = (self.vacationPlans)[indexPath.row];
     //NSLog(@"cell %@", cell.textLabel.text);
     return cell;
 }
@@ -72,14 +73,13 @@
 {
     [tableView setAllowsMultipleSelection:YES];
 
-    id data = [self.vacationPlans objectAtIndex:indexPath.row];
+    id data = (self.vacationPlans)[indexPath.row];
     [self.selectedVacation addObject:data];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (data)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
-    
     NSLog(@"selected vacation %d", self.selectedVacation.count);
 }
 

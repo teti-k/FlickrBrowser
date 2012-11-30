@@ -39,63 +39,54 @@ unsigned long long const resonableCache = 10000; //the size of the cache
     [super viewDidAppear:animated];
     [self addButton];
     self.scrollView.delegate = self;
-    self.scrollView.contentSize = self.imageView.image.size;
-    self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
+    self.scrollView.minimumZoomScale = 1.0;
+    //self.scrollView.contentSize = self.scrollView.frame.size;
+    self.scrollView.contentSize = self.imageView.frame.size;
 }
-
--(void)addButton
+- (void) addButton
 {
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     UIButton *button = [UIButton buttonWithType:UIBarButtonItemStyleBordered];
     button.frame = CGRectMake(80.0, 300.0, 50, 30.0);
-    if (!self.vacationPlanName)
-    {
-        [button setTitle:@"Visit" forState:UIControlStateNormal];
-        [button addTarget:self
-                   action:@selector(callVacationPlanNameController)
-         forControlEvents:UIControlEventTouchUpInside];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button]];
-        return;
-    }
-    [VacationHelper openVacation:self.vacationPlanName usingBlock:^(UIManagedDocument *vacation)
+    button.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation)
      {
          NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
          request.predicate = [NSPredicate predicateWithFormat:@"unique = %@",[self.selectedImage objectForKey:FLICKR_PHOTO_ID]];
          NSError *error = nil;
          NSArray *matches = [vacation.managedObjectContext executeFetchRequest:request error:&error];
+         
          if (matches.count == 0)
          {
              [button setTitle:@"Visit" forState:UIControlStateNormal];
              [button addTarget:self
                         action:@selector(useDocument)
               forControlEvents:UIControlEventTouchUpInside];
-         } else if (!matches.count == 0)
+         }
+         else
          {
              [button setTitle:@"Unvisit" forState:UIControlStateNormal];
              [button addTarget:self
                         action:@selector(deleteDocument)
               forControlEvents:UIControlEventTouchUpInside];
          }
+         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button]];
      }];
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:button]];
-}
-
-- (void)callVacationPlanNameController
-{
-    VacationPlanNameController *vpn = [self.storyboard instantiateViewControllerWithIdentifier:@"VacationPlanName"];
-    [self addChildViewController:vpn];
-    [self.view addSubview:vpn.view];
+    NSLog(@"button name %@", button.titleLabel.text);
 }
 
 -(void) deleteDocument
 {
-    [VacationHelper openVacation:self.vacationPlanName usingBlock:^(UIManagedDocument *vacation){
+    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation){
         //[self deletePhotoWithFlickrInfo:self.selectedImage inManagedObjectContext:vacation.managedObjectContext];
         [Photo deletePhotoWithFlickrInfo:self.selectedImage inManagedObjectContext:vacation.managedObjectContext];
         [vacation saveToURL:vacation.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:NULL];
     }];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"The photo was deleted to Virtual vacation plan!"
+                                                    message:@"The photo was deleted from vacation plan!"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
@@ -105,16 +96,15 @@ unsigned long long const resonableCache = 10000; //the size of the cache
 
 -(void) useDocument
 {
-    [VacationHelper openVacation:self.vacationPlanName usingBlock:^(UIManagedDocument *vacation){
+    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation){
             [self fetchFlickrDataIntoDocument:vacation];
     }];
-    self.navigationItem.rightBarButtonItem.title = @"Unvisit";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:@"The photo was saved to Virtual vacation plan!"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+//                                                    message:@"The photo was saved to Virtual vacation plan!"
+//                                                   delegate:nil
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
 }
 
 - (void)fetchFlickrDataIntoDocument:(UIManagedDocument *)document
@@ -189,12 +179,17 @@ unsigned long long const resonableCache = 10000; //the size of the cache
 - (void)downloadImage:(NSDictionary *)photo
 
 {
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [spinner startAnimating];
+    spinner.center = self.view.center;
+    [self.view addSubview:spinner];
+    [self.view bringSubviewToFront:spinner];
         __block NSData *data;
         dispatch_queue_t downloadQueue = dispatch_queue_create("Download", NULL);
         dispatch_async(downloadQueue, ^{
             NSError *error;
             NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSString *rootDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *rootDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
             NSString *folderPath = [rootDirectory stringByAppendingPathComponent:@"CachedFlickrPhotos"];
             
             if (![fileManager fileExistsAtPath:folderPath])
@@ -202,17 +197,17 @@ unsigned long long const resonableCache = 10000; //the size of the cache
                 [fileManager createDirectoryAtPath:folderPath withIntermediateDirectories:NO attributes:nil error:&error];
             }
             //define filepath for selectedPhoto
-            NSString *filePath = [folderPath stringByAppendingPathComponent:[photo objectForKey:FLICKR_PHOTO_ID]];
+            NSString *filePath = [folderPath stringByAppendingPathComponent:photo[FLICKR_PHOTO_ID]];
             if(![fileManager fileExistsAtPath:filePath])
             {
                 //if we don't have image in cache
                 //define url depending on the construction of photo
                 NSURL *url;
-                if (![photo objectForKey:FLICKR_URL])
+                if (!photo[FLICKR_URL])
                 {
                     url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
                 }
-                else url = [photo objectForKey:FLICKR_URL];
+                else url = photo[FLICKR_URL];
                 
                 //get data from url
                 data = [[NSData alloc] initWithContentsOfURL:url];
@@ -232,24 +227,25 @@ unsigned long long const resonableCache = 10000; //the size of the cache
             
             //check for the Cache folder size
             unsigned int size = 0;
-            size = [[[fileManager attributesOfItemAtPath:folderPath error:&error] objectForKey:NSFileSize] unsignedIntegerValue];
+            size = [[fileManager attributesOfItemAtPath:folderPath error:&error][NSFileSize] unsignedIntegerValue];
             
             //if it is more than 10Mb, delete the oldest file
             if( size > resonableCache )
             {
                 NSMutableArray *modificationsLog = [[[NSUserDefaults standardUserDefaults] objectForKey:@"defaults"] mutableCopy];
-                [fileManager removeItemAtPath:[modificationsLog objectAtIndex:0]  error:&error];
+                [fileManager removeItemAtPath:modificationsLog[0]  error:&error];
                 [modificationsLog removeObjectAtIndex:0];
                 [[NSUserDefaults standardUserDefaults] setObject:modificationsLog forKey:@"defaults"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             dispatch_async(dispatch_get_main_queue(), ^
                            {
+                               [spinner stopAnimating];
+                               [spinner removeFromSuperview];
                                self.imageView.image = [UIImage imageWithData:data];
                                self.navigationItem.title = self.imageTitle;
                                self.scrollView.delegate = self;
-                               self.scrollView.contentSize = self.imageView.image.size;
-                               self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
+
                            });
                        });
         dispatch_release(downloadQueue);

@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SplitViewBarButtonItemPresenter.h"
+#import "VacationPlanNameController.h"
 
 @interface ShowImageViewController : UIViewController <SplitViewBarButtonItemPresenter,  UISplitViewControllerDelegate>
 @property (nonatomic,strong) NSDictionary *selectedImage; //used to segue from TopPhotoVC
 @property (nonatomic,weak) NSString *imageTitle; //image title will be displayed on navigation panel
 @property (nonatomic, strong) UIManagedDocument *vacationDatabase;
-@property (nonatomic, strong) NSString *vacationPlanName;
 - (void)downloadImage:(NSDictionary *)photo;
 @end

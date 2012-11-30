@@ -9,7 +9,7 @@
             <objects>
                 <tableViewController id="MFk-D2-Drz" customClass="FirstTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ds1-mo-Uif">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -45,10 +45,16 @@
                             <outlet property="delegate" destination="MFk-D2-Drz" id="ce2-bV-C2D"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Top Places" id="Zd2-Tx-pVU">
-                        <barButtonItem key="leftBarButtonItem" id="Hjp-2K-6V8">
+                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="pCh-eX-H7m">
+                            <connections>
+                                <action selector="refresh:" destination="MFk-D2-Drz" id="sIW-93-kWj"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" id="Hjp-2K-6V8">
                             <segmentedControl key="customView" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="NV7-q4-bq5">
-                                <rect key="frame" x="5" y="7" width="77" height="30"/>
+                                <rect key="frame" x="238" y="7" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="List"/>
@@ -59,12 +65,8 @@
                                 </connections>
                             </segmentedControl>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="refresh" id="pCh-eX-H7m">
-                            <connections>
-                                <action selector="refresh:" destination="MFk-D2-Drz" id="sIW-93-kWj"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="segmentControl" destination="NV7-q4-bq5" id="LVd-Kz-dp9"/>
                     </connections>
@@ -236,14 +238,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ldv-Sz-7R2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1991" y="1286"/>
+            <point key="canvasLocation" x="1979" y="1278"/>
         </scene>
         <!--Top Photo View Controller-->
         <scene sceneID="dRR-Xc-r9J">
             <objects>
                 <tableViewController storyboardIdentifier="topPhotoVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bZk-Oe-wKE" customClass="TopPhotoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ZlH-Sl-U8O">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -282,8 +284,8 @@
                     <navigationItem key="navigationItem" id="yec-6E-acw">
                         <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" id="kC4-47-LaI">
-                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="pzE-FC-aYH">
-                                <rect key="frame" x="187" y="7" width="128" height="30"/>
+                            <segmentedControl key="customView" opaque="NO" contentMode="right" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="pzE-FC-aYH">
+                                <rect key="frame" x="238" y="7" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="List"/>
@@ -321,10 +323,24 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="sII-UJ-m9L">
                         <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" id="uwy-oS-Uii">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" id="z9z-YI-kdQ">
+                                <rect key="frame" x="238" y="7" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="List"/>
+                                    <segment title="Map"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentControlChanged:" destination="dua-Ue-sgc" eventType="valueChanged" id="bu4-ZK-RfH"/>
+                                </connections>
+                            </segmentedControl>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="mapView" destination="MfG-4P-zAR" id="FMj-eb-mR9"/>
+                        <outlet property="segmentControl" destination="z9z-YI-kdQ" id="GZ8-Im-KVd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTy-Sa-ltu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -388,12 +404,12 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" id="m2Z-Jg-ZYU">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" id="m2Z-Jg-ZYU">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView multipleTouchEnabled="YES" contentMode="scaleToFill" image="Default.png" id="E99-1j-4gh">
-                                        <rect key="frame" x="0.0" y="-3" width="320" height="370"/>
+                                    <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFit" id="E99-1j-4gh">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
                                 </subviews>
@@ -488,10 +504,22 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Dwg-rR-Mgc">
-                                <rect key="frame" x="110" y="315" width="101" height="33"/>
+                                <rect key="frame" x="50" y="315" width="100" height="33"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Save!">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TFX-uh-3M8">
+                                <rect key="frame" x="180" y="315" width="100" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Cancel">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -504,6 +532,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Create vacation plan" id="H0b-HD-tOI"/>
                     <connections>
+                        <outlet property="cancelButton" destination="TFX-uh-3M8" id="bRQ-ej-TLh"/>
                         <outlet property="saveButton" destination="Dwg-rR-Mgc" id="29M-ix-ixa"/>
                         <outlet property="vacationDescription" destination="Iwc-Fp-XYv" id="GOH-QY-9xg"/>
                         <outlet property="vacationName" destination="PfN-PC-NH4" id="75G-24-s8z"/>
@@ -555,9 +584,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Recent photos" id="feC-8f-HOs">
-                        <barButtonItem key="leftBarButtonItem" id="BtA-2t-f3n">
+                        <barButtonItem key="rightBarButtonItem" id="BtA-2t-f3n">
                             <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="2Ge-gi-MsY">
-                                <rect key="frame" x="5" y="7" width="71" height="30"/>
+                                <rect key="frame" x="238" y="7" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="List"/>
@@ -731,16 +760,13 @@
             <point key="canvasLocation" x="379" y="972"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Default.png" width="320" height="480"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="8QU-w5-hl0"/>
+        <segue reference="t1S-ei-vXq"/>
         <segue reference="IjF-ig-Qtb"/>
     </inferredMetricsTieBreakers>
 </document>

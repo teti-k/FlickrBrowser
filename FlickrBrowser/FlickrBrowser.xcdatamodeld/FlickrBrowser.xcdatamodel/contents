@@ -2,7 +2,7 @@
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Location" representedClassName="Location" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="whereTaken" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="photos" toMany="YES" minCount="1" deletionRule="Cascade" destinationEntity="Photo" inverseName="whereTaken" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Photo" representedClassName="Photo" syncable="YES">
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,15 +10,15 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unique" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tag" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="photos" inverseEntity="Tag" syncable="YES"/>
-        <relationship name="whereTaken" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="photos" inverseEntity="Location" syncable="YES"/>
+        <relationship name="whereTaken" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="photos" inverseEntity="Location" syncable="YES"/>
     </entity>
     <entity name="Tag" representedClassName="Tag" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="tag" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Location" positionX="-425" positionY="144" width="128" height="75"/>
-        <element name="Photo" positionX="-198" positionY="209" width="128" height="135"/>
-        <element name="Tag" positionX="7" positionY="171" width="128" height="75"/>
+        <element name="Location" positionX="-405" positionY="117" width="128" height="73"/>
+        <element name="Photo" positionX="-198" positionY="0" width="128" height="133"/>
+        <element name="Tag" positionX="16" positionY="126" width="128" height="73"/>
     </elements>
 </model>

@@ -19,26 +19,22 @@
     NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     url = [url URLByAppendingPathComponent:vacationName];
     UIManagedDocument *doc = [[UIManagedDocument alloc] initWithFileURL:url];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *vacationPlans = [[defaults objectForKey:VACATION_PLANS_ARRAY] mutableCopy];
-    if (!vacationPlans) vacationPlans = [NSMutableArray array];
-    
+    NSMutableArray *vacationsArray = [[[NSUserDefaults standardUserDefaults] objectForKey:VACATION_PLANS_ARRAY] mutableCopy];
+    if (!vacationsArray) vacationsArray = [NSMutableArray array];
     if(![[NSFileManager defaultManager] fileExistsAtPath:[url path]])
     {
         [doc saveToURL:url forSaveOperation:UIDocumentSaveForCreating completionHandler:NULL];
         [doc openWithCompletionHandler:NULL];
-        [vacationPlans addObject:vacationName];
-        [defaults setObject:vacationPlans forKey:VACATION_PLANS_ARRAY];
-        [defaults synchronize];
-       // NSLog(@"VacationPlans from Vacation helper %@", vacationPlans.lastObject);
-
+        
+        [vacationsArray addObject:vacationName];
+        [[NSUserDefaults standardUserDefaults] setObject:vacationsArray forKey:VACATION_PLANS_ARRAY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if(doc.documentState == UIDocumentStateClosed)
     {
         [doc openWithCompletionHandler:^(BOOL success){
             completionBlock(doc);
         }];
-       // NSLog(@"VacationPlans from Vacation helper %@", vacationPlans.lastObject);
     }
 }
 

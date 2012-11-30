@@ -38,13 +38,13 @@
 {
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [spinner startAnimating];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     
     dispatch_queue_t downloadQueue = dispatch_queue_create("flickr downloader", NULL);
     dispatch_async(downloadQueue, ^{
         NSArray *photos = [FlickrFetcher topPlaces];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.navigationItem.rightBarButtonItem = sender; 
+            self.navigationItem.leftBarButtonItem = sender;
             self.photos = photos;
         });
     });
@@ -100,9 +100,9 @@
     }
     
     // Configure the cell...
-    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    NSDictionary *photo = (self.photos)[indexPath.row];
     cell.textLabel.text = [photo valueForKeyPath:@"woe_name"];
-    cell.detailTextLabel.text = [photo objectForKey:FLICKR_PLACE_NAME];
+    cell.detailTextLabel.text = photo[FLICKR_PLACE_NAME];
     
     
     return cell;
@@ -116,8 +116,13 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
 
         TopPhotoViewController *dest = [segue destinationViewController];
-        dest.selectedLocation = [self.photos objectAtIndex:indexPath.row];
+        dest.selectedLocation = (self.photos)[indexPath.row];
         dest.title = [[sender textLabel] text];
+        dest.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
 
     }
 }

@@ -14,6 +14,8 @@
 
 @interface MapViewController () <MKMapViewDelegate>
 @property (nonatomic, strong) IBOutlet MKMapView *mapView;
+@property (nonatomic, strong) IBOutlet UISegmentedControl *segmentControl;
+@property (nonatomic, weak) NSArray *viewControllers;
 
 @end
 
@@ -29,8 +31,29 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
-    
 }
+
+
+//button switches to map
+- (IBAction)segmentControlChanged:(UISegmentedControl *)sender
+{
+    
+    switch (self.segmentControl.selectedSegmentIndex)
+    {
+        case 0:
+            self.viewControllers  = [self.navigationController viewControllers];
+            [self.navigationController popToViewController:[self.viewControllers objectAtIndex:self.viewControllers.count - 2]  animated:YES];
+            //NSLog(@"previous VC %@", [self.viewControllers objectAtIndex:self.viewControllers.count - 2]);
+            [self.segmentControl setSelectedSegmentIndex:0];
+        case 1:
+        {
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 
 - (void) updateMapView
 {
@@ -63,7 +86,7 @@
     if (self.annotations.count > 0) {
         
         // Use first annotation as intial reference
-        FlickrPhotoAnnotation *annotation = [self.annotations objectAtIndex:0];
+        FlickrPhotoAnnotation *annotation = (self.annotations)[0];
         minLatitude  = annotation.coordinate.latitude;
         maxLatitude  = annotation.coordinate.latitude;
         minLongitude = annotation.coordinate.longitude;
@@ -99,8 +122,6 @@
         aView.canShowCallout = YES;
         aView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
         aView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        
-
     }
     
     aView.annotation = annotation;
@@ -137,7 +158,7 @@
             {
                 [self splitViewShowImageVC].selectedImage = viewAnnotation.photo;
                 [[self splitViewShowImageVC] downloadImage:[self splitViewShowImageVC].selectedImage];
-                [self splitViewShowImageVC].imageTitle = [viewAnnotation.photo objectForKey:FLICKR_PHOTO_DESCRIPTION];
+                [self splitViewShowImageVC].imageTitle = (viewAnnotation.photo)[FLICKR_PHOTO_DESCRIPTION];
             }
         }
     }
@@ -148,7 +169,7 @@
             
         [self.navigationController pushViewController:tpvc animated:NO];
         tpvc.selectedLocation = viewAnnotation.photo;
-        tpvc.title = [viewAnnotation.photo objectForKey:FLICKR_PLACE_NAME];
+        tpvc.title = (viewAnnotation.photo)[FLICKR_PLACE_NAME];
     }
 }
 

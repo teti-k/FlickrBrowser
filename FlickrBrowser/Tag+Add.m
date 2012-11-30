@@ -9,11 +9,10 @@
 #import "Tag+Add.h"
 
 @implementation Tag (Add)
-+ (NSSet *) tagNames:(NSString *)names inManagedObjectContext:(NSManagedObjectContext *)context
++ (NSSet *) tagNames:(NSSet *)setOfTagNames inManagedObjectContext:(NSManagedObjectContext *)context
 {
     Tag *tag;
     NSMutableSet *tagSet = [NSMutableSet set];
-    NSSet *setOfTagNames = [NSSet setWithArray:[names componentsSeparatedByString:@" "]];
     for (NSString *name in setOfTagNames)
     {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tag"];

@@ -2,7 +2,7 @@
 //  Location.m
 //  FlickrBrowser
 //
-//  Created by Zshcbka on 11/8/12.
+//  Created by Zshcbka on 11/28/12.
 //  Copyright (c) 2012 Zshcbka. All rights reserved.
 //
 

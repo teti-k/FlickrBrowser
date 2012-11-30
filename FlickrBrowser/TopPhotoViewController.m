@@ -24,7 +24,7 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
 
 
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
     dispatch_queue_t downloadQueue = dispatch_queue_create("flickr downloader", NULL);
     dispatch_async(downloadQueue, ^{
@@ -35,7 +35,7 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
     });
     dispatch_release(downloadQueue);
     self.navigationItem.title = self.title;
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
     
 }
 
@@ -95,8 +95,8 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
 - (CLLocationCoordinate2D) coordinate
 {
     CLLocationCoordinate2D coordinate;
-    coordinate.latitude = [[self.selectedLocation objectForKey:FLICKR_LATITUDE] doubleValue];
-    coordinate.longitude = [[self.selectedLocation objectForKey:FLICKR_LONGITUDE] doubleValue];
+    coordinate.latitude = [(self.selectedLocation)[FLICKR_LATITUDE] doubleValue];
+    coordinate.longitude = [(self.selectedLocation)[FLICKR_LONGITUDE] doubleValue];
     return coordinate;
 }
 
@@ -114,13 +114,12 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
-    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
-    if ([photo valueForKeyPath:@"title"]) {
-        cell.textLabel.text = [photo valueForKeyPath:@"title"];
+    NSDictionary *photo = (self.photos)[indexPath.row];
+    cell.textLabel.text = @"Untitled";
+    if (![photo[FLICKR_PHOTO_TITLE] isEqualToString:@""]) {
+        cell.textLabel.text = photo[FLICKR_PHOTO_TITLE];
     }
-    else cell.textLabel.text = @"Untitled";
-    cell.detailTextLabel.text = [photo objectForKey:FLICKR_PHOTO_OWNER];
-    
+    cell.detailTextLabel.text = photo[FLICKR_PHOTO_OWNER];
     return cell;
 }
 
@@ -128,15 +127,15 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    NSDictionary *photo = (self.photos)[indexPath.row];
     // saveToRecents
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *recents = [[defaults valueForKey:@"FAVOURITES_KEY"] mutableCopy];
     if ( recents == nil ) recents = [NSMutableArray array];
     for (int i=0; i<recents.count; i++)
     {
-        NSString *rec_value = (NSString *)[[recents objectAtIndex:i] objectForKey:FLICKR_PHOTO_ID];
-        NSString *photo_value = (NSString *)[photo objectForKey:FLICKR_PHOTO_ID];
+        NSString *rec_value = (NSString *)recents[i][FLICKR_PHOTO_ID];
+        NSString *photo_value = (NSString *)photo[FLICKR_PHOTO_ID];
         if ([rec_value isEqualToString:photo_value]) {
             [recents removeObjectAtIndex:i];
         }
@@ -157,7 +156,7 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
     {
         [self splitViewShowImageVC].selectedImage = photo;
         [[self splitViewShowImageVC] downloadImage:[self splitViewShowImageVC].selectedImage];
-        [self splitViewShowImageVC].imageTitle = [photo objectForKey:FLICKR_PHOTO_DESCRIPTION];
+        [self splitViewShowImageVC].imageTitle = photo[FLICKR_PHOTO_DESCRIPTION];
     }
 }
 
@@ -178,8 +177,13 @@ int const resonableRecents = 15; //amount of recently viewed photos to show in S
         
         ShowImageViewController *dest = [segue destinationViewController];
         dest.imageTitle = [[sender textLabel] text];
-        dest.selectedImage = [self.photos objectAtIndex:indexPath.row];        
+        dest.selectedImage = (self.photos)[indexPath.row];        
         dest.hidesBottomBarWhenPushed = YES; //hide tabs
+        dest.navigationItem.backBarButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                         style:UIBarButtonItemStyleBordered
+                                        target:nil
+                                        action:nil];
     }
 }
  
