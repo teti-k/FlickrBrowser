@@ -39,4 +39,23 @@
 
     return tagSet;
 }
+
++ (void) deleteInContext: (NSManagedObjectContext *)context
+{
+    Tag *tag = nil;
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tag"];
+    //request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+    
+    NSError *error = nil;
+    NSArray *tags = [context executeFetchRequest:request error:&error];
+    for (tag in tags)
+    {
+        if (tag.photos.count == 0)
+        {
+            [context deleteObject:tag];
+            [context save:nil];
+        }
+    }
+}
 @end

@@ -79,22 +79,21 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *vacationPlan = [[defaults objectForKey:VACATION_PLANS_ARRAY] mutableCopy];
     if (!vacationPlan) vacationPlan = [NSMutableArray array];
-    for (NSString *storedName in vacationPlan)
-    {
-        if ([storedName isEqualToString:name])
+    NSSet *set = [NSSet setWithArray:vacationPlan];
+        if ([set containsObject:name])
         {
             UIAlertView *emptyFiledAllert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There is already a plan with such name" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [emptyFiledAllert show];
-            return;
         }
-        else [vacationPlan addObject:name];
-    }
+        else
+        {
+            [vacationPlan addObject:name];
+        }
     [defaults setObject:vacationPlan forKey:VACATION_PLANS_ARRAY];
     NSLog(@"vacation plans/AddVacation VC %d",[vacationPlan count]);
     [defaults synchronize];
     UIAlertView *emptyFiledAllert = [[UIAlertView alloc] initWithTitle:nil message:@"Done!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [emptyFiledAllert show];
-    return;
 }
 
 @end

@@ -60,25 +60,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "ShowImageViewController.m"
-         timestampString = "375829000.584283"
+         timestampString = "376303367.494716"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "186"
-         endingLineNumber = "186"
+         startingLineNumber = "190"
+         endingLineNumber = "190"
          landmarkName = "-downloadImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "FlickrBrowser/Location+TakePicture.m"
-         timestampString = "375910275.81343"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "14"
-         endingLineNumber = "14"
-         landmarkName = "+locationName:inManagedObjectContext:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -95,16 +82,16 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "FlickrBrowser/Location+TakePicture.m"
-         timestampString = "375910361.33276"
+         timestampString = "376227824.682557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "44"
-         endingLineNumber = "44"
-         landmarkName = "+locationName:inManagedObjectContext:"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
+         landmarkName = "+deleteInContext:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -118,6 +105,110 @@
          startingLineNumber = "40"
          endingLineNumber = "40"
          landmarkName = "+photoWithFlickrInfo:inManagedObjectContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/Tag+Add.m"
+         timestampString = "376230454.70299"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
+         landmarkName = "+deleteInContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/Tag+Add.m"
+         timestampString = "376230685.207495"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "47"
+         endingLineNumber = "47"
+         landmarkName = "+deleteInContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/Photo+Flickr.m"
+         timestampString = "376239862.07629"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "59"
+         endingLineNumber = "59"
+         landmarkName = "+deletePhotoWithFlickrInfo:inManagedObjectContext:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/AddVacationViewController.m"
+         timestampString = "376250520.485868"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "82"
+         endingLineNumber = "82"
+         landmarkName = "-saveVacation"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/LocationViewController.m"
+         timestampString = "376252137.186283"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "35"
+         endingLineNumber = "35"
+         landmarkName = "-useDocument"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShowImageViewController.m"
+         timestampString = "376303487.720149"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "99"
+         endingLineNumber = "99"
+         landmarkName = "-useDocument"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "ShowImageViewController.m"
+         timestampString = "376304195.752443"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "114"
+         endingLineNumber = "114"
+         landmarkName = "-fetchFlickrDataIntoDocument:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "FlickrBrowser/LocationViewController.m"
+         timestampString = "376304388.656092"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
+         landmarkName = "-setupFetchedResultsController:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

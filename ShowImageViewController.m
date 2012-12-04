@@ -11,7 +11,7 @@
 #import "VacationHelper.h"
 #import "FlickrFetcher.h"
 #import "Photo+Flickr.h"
-#import "VacationPlanNameController.h"
+#import "VacationViewController.h"
 
 
 @interface ShowImageViewController () <UIScrollViewDelegate>
@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar; //to put there a bar button item for split view
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) NSMutableData *photoData;
+@property (nonatomic,strong) NSString *contextName;
 @end
 
 @implementation ShowImageViewController
@@ -43,6 +44,7 @@ unsigned long long const resonableCache = 10000; //the size of the cache
     //self.scrollView.contentSize = self.scrollView.frame.size;
     self.scrollView.contentSize = self.imageView.frame.size;
 }
+
 - (void) addButton
 {
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -51,7 +53,7 @@ unsigned long long const resonableCache = 10000; //the size of the cache
     UIButton *button = [UIButton buttonWithType:UIBarButtonItemStyleBordered];
     button.frame = CGRectMake(80.0, 300.0, 50, 30.0);
     button.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation)
+    [VacationHelper openVacation:vacationPlan usingBlock:^(UIManagedDocument *vacation)
      {
          NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
          request.predicate = [NSPredicate predicateWithFormat:@"unique = %@",[self.selectedImage objectForKey:FLICKR_PHOTO_ID]];
@@ -79,7 +81,7 @@ unsigned long long const resonableCache = 10000; //the size of the cache
 
 -(void) deleteDocument
 {
-    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation){
+    [VacationHelper openVacation:vacationPlan usingBlock:^(UIManagedDocument *vacation){
         //[self deletePhotoWithFlickrInfo:self.selectedImage inManagedObjectContext:vacation.managedObjectContext];
         [Photo deletePhotoWithFlickrInfo:self.selectedImage inManagedObjectContext:vacation.managedObjectContext];
         [vacation saveToURL:vacation.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:NULL];
@@ -96,15 +98,15 @@ unsigned long long const resonableCache = 10000; //the size of the cache
 
 -(void) useDocument
 {
-    [VacationHelper openVacation:@"My vacation plan" usingBlock:^(UIManagedDocument *vacation){
+    [VacationHelper openVacation:vacationPlan usingBlock:^(UIManagedDocument *vacation){
             [self fetchFlickrDataIntoDocument:vacation];
     }];
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                    message:@"The photo was saved to Virtual vacation plan!"
-//                                                   delegate:nil
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//    [alert show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"The photo was saved to Virtual vacation plan!"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)fetchFlickrDataIntoDocument:(UIManagedDocument *)document

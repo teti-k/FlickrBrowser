@@ -9,6 +9,7 @@
 #import "VacationViewController.h"
 #import "VacationHelper.h"
 
+
 @interface VacationViewController ()
 @property (nonatomic, weak) NSArray *vacationPlans;
 @end
@@ -19,7 +20,7 @@ NSString *vacationPlan;
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Your virtual vacations";
+    self.title = @"Virtual vacations";
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -53,6 +54,7 @@ NSString *vacationPlan;
     }
     
     cell.textLabel.text = [self.vacationPlans objectAtIndex:indexPath.row];
+    NSLog(@"vacation plans count %d vacation VC", self.vacationPlans.count);
     return cell;
 }
 
@@ -60,7 +62,7 @@ NSString *vacationPlan;
 {
     //send to next view controllers the name of chosen Vacation Plan
     vacationPlan = [[[self.tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    
+
 }
 
 

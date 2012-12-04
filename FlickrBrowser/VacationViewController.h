@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 extern NSString *vacationPlan;
 @interface VacationViewController : UITableViewController
 

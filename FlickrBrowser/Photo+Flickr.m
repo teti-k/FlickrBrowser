@@ -64,6 +64,8 @@
         //delete
         [context deleteObject:[matches lastObject]];
         [context save:nil];
+        [Location deleteInContext:context];
+        [Tag deleteInContext:context];
         
     }
 }

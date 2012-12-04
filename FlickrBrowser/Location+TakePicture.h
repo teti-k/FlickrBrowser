@@ -12,5 +12,6 @@
 
 + (Location *)locationName:(NSString *)name
                 inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void) deleteInContext: (NSManagedObjectContext *)context;
 
 @end

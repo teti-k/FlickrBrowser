@@ -11,4 +11,5 @@
 @interface Tag (Add)
 + (NSSet *) tagNames:(NSSet *)setOfTagNames
         inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void) deleteInContext: (NSManagedObjectContext *)context;
 @end

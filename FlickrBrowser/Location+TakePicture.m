@@ -34,16 +34,28 @@
     } else {
         location = [locations lastObject];
     }
-    
-    if (location.photos.count == 0)
-    {
-        [context deleteObject:location];
-        [context save:nil];
-    }
 
     return location;
 }
 
++ (void) deleteInContext: (NSManagedObjectContext *)context
+{
+    Location *location = nil;
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Location"];
+    //request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
+    
+    NSError *error = nil;
+    NSArray *locations = [context executeFetchRequest:request error:&error];
+    for (location in locations)
+    {
+        if (location.photos.count == 0)
+        {
+            [context deleteObject:location];
+            [context save:nil];
+        }
+    }
+}
 
 
 @end

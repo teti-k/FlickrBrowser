@@ -16,6 +16,7 @@
 + (void)openVacation:(NSString *)vacationName
           usingBlock:(completion_block_t)completionBlock
 {
+    if (!vacationName) vacationName = @"My vacation plan";
     NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     url = [url URLByAppendingPathComponent:vacationName];
     UIManagedDocument *doc = [[UIManagedDocument alloc] initWithFileURL:url];
@@ -25,8 +26,12 @@
     {
         [doc saveToURL:url forSaveOperation:UIDocumentSaveForCreating completionHandler:NULL];
         [doc openWithCompletionHandler:NULL];
+        NSSet *set = [NSSet setWithArray:vacationsArray];
+            if (![set containsObject:vacationName])
+            {
+                [vacationsArray addObject:vacationName];
+            }
         
-        [vacationsArray addObject:vacationName];
         [[NSUserDefaults standardUserDefaults] setObject:vacationsArray forKey:VACATION_PLANS_ARRAY];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
